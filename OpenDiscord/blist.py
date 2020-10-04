@@ -2,19 +2,18 @@
 This is the blist.xyz API Wrapper.
 
 Example
-.. highlight:: python
-.. codeblock:: python
-    from OpenDiscord import blist
+```py
+from OpenDiscord import blist
 
-    blist_api = blist.api(bot_id, token) # Token is optional unless you are doing POST request, if you still try it will trow a 400 status code and a missing key error.
+blist_api = blist.api(bot_id, token) # Token is optional unless you are doing a POST request.
 
-    id = blist_api.get_id()
-    name = blist_api.get_name()
+id = blist_api.get_id()
+name = blist_api.get_name()
 
-    owners = blist_api.get_owners() # Will return a list of all the owner's ids
-    for owner in owners:
-        print(owner)
-
+owners = blist_api.get_owners() # Will return a list of all the owner's ids
+for owner in owners:
+    print(owner)
+```
 '''
 import json
 from datetime import datetime
@@ -28,7 +27,7 @@ class API:
     def __init__(self, bot_id, authorization=None):
         '''
         bot_id: The bot id this cannot be None.
-        authorization: Authorization this can be None unless you are making POST requests then it will trow an error
+        authorization: Authorization this can be None
         '''
         self.bot_id = bot_id
         self.authorization = authorization
@@ -144,8 +143,7 @@ class API:
         request = requests.get(self.url + f"/bot/{self.bot_id}/stats/").json()
         if request['certified'] == 'false':
             return False
-        else:
-            return True
+        return True
 
     def get_vanity_url(self):
         '''
@@ -173,8 +171,7 @@ class API:
         Returns the add data and time in the following format: Y-M-D H:M:S
         '''
         request = requests.get(self.url + f"/bot/{self.bot_id}/stats/").json()
-        ts = request['add_date']
-        return datetime.utcfromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
+        return datetime.utcfromtimestamp(request['add_date']).strftime('%Y-%m-%d %H:%M:%S')
 
     def get_invites(self):
         '''
@@ -228,52 +225,80 @@ class API:
         '''
         id: The User ID
 
-        Returns the User ID, Useless feature since you can only request it using the ID, but I'll still include it.
+        Returns the User ID
         '''
         request = requests.get(self.url + f"/user/{user_id}/").json()
         return int(request['id'])
 
     def get_user_bio(self, user_id):
+        '''
+        Gets the user's bio
+        '''
         request = requests.get(self.url + f"/user/{user_id}/").json()
         return str(request['bio'])
 
     def get_user_staff(self, user_id):
+        '''
+        Returns True if the user is staff False if not
+        '''
         request = requests.get(self.url + f"/user/{user_id}/").json()
         if request['staff'] == 'false':
             return False
-        else:
-            return True
+        return True
 
     def get_user_joined_at(self, user_id):
+        '''
+        Returns the date and time when a user joined
+        '''
         request = requests.get(self.url + f"/user/{user_id}/").json()
-        ts = request['joined_at']
-        return datetime.utcfromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
+        return datetime.utcfromtimestamp(request['joined_at']).strftime('%Y-%m-%d %H:%M:%S')
 
     def get_user_reddit(self, user_id):
+        '''
+        Gets the user's reddit name.
+        '''
         request = requests.get(self.url + f"/user/{user_id}/").json()
         return str(request['reddit'])
 
     def get_user_snapchat(self, user_id):
+        '''
+        Gets the user's snapchat name.
+        '''
         request = requests.get(self.url + f"/user/{user_id}/").json()
         return str(request['snapchat'])
 
     def get_user_instagram(self, user_id):
+        '''
+        Gets the user's instagram name
+        '''
         request = requests.get(self.url + f"/user/{user_id}/").json()
         return str(request['instagram'])
 
     def get_user_twitter(self, user_id):
+        '''
+        Gets the user's twitter name
+        '''
         request = requests.get(self.url + f"/user/{user_id}/").json()
         return str(request['twitter'])
 
     def get_user_github(self, user_id):
+        '''
+        Returns the github name of the user
+        '''
         request = requests.get(self.url + f"/user/{user_id}/").json()
         return str(request['github'])
 
     def get_user_website(self, user_id):
+        '''
+        Returns the user's website if it is set
+        '''
         request = requests.get(self.url + f"/user/{user_id}/").json()
         return str(request['website'])
 
     def get_user_bots(self, user_id):
+        '''
+        Returns the amount of bots the user owns (int)
+        '''
         request = requests.get(self.url + f"/user/{user_id}/").json()
         return int(request['bots'])
 
@@ -290,9 +315,12 @@ class API:
         votes = request['votes']
         if user_id in votes:
             return votes[user_id]
+        return None
 
-    def get_widget(self, type: str = None):
-        if type is None:
+    def get_widget(self, style: str = None):
+        '''
+        Returns the widget url for the bot. Style can only normal as of 2020, 4 oct
+        '''
+        if style is None:
             return self.url + f"/bot/{self.bot_id}/widget/?type=normal"
-        else:
-            return self.url + f"/bot/{self.bot_id}/widget/?type={type}"
+        return self.url + f"/bot/{self.bot_id}/widget/?type={style}"

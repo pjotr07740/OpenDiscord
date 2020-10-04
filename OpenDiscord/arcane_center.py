@@ -2,16 +2,15 @@
 arcane_center is an Discord Bot listing site, this is an API wrapper for it.
 
 Example
-.. highlight:: python
-.. codeblock:: python
+```py
 
-    from OpenDiscord import arcane_center
+from OpenDiscord import arcane_center
 
-    arcane_center_api = arcane_center.API(bot_id, authorization)
+arcane_center_api = arcane_center.API(bot_id, authorization)
 
-    arcane_center_api.post_server_count(1)
-    arcane_center_api.post_shard_count(1)
-    ...
+arcane_center_api.post_server_count(1)
+arcane_center_api.post_shard_count(1)
+```
 '''
 import json
 import requests
@@ -27,13 +26,11 @@ class API:
         authorization: Get this from https://docs.arcane-center.xyz/how-to-get-an-access-token
 
         Example
-        .. highlight:: python
-        .. codeblock:: python
+        ```py
+        from OpenDiscord import arcane_center
 
-            from OpenDiscord import arcane_center
-
-            arcane_center_api = arcane_center.API(bot_id, authorization)
-            ...
+        arcane_center_api = arcane_center.API(bot_id, authorization)
+        ```
         '''
         self.bot_id = bot_id
         self.authorization = authorization
@@ -46,14 +43,12 @@ class API:
 
         returns: Status code of the request.
         Example
-        .. highlight:: python
-        .. codeblock:: python
+        ```py
+        from OpenDiscord import arcane_center
 
-            from OpenDiscord import arcane_center
-
-            arcane_center_api = arcane_center.API(bot_id, authorization)
-            arcane_center_api.post_server_count(server_count)
-            ...
+        arcane_center_api = arcane_center.API(bot_id, authorization)
+        arcane_center_api.post_server_count(server_count)
+        ```
         '''
         headers = {
             'Authorization': self.authorization,
@@ -74,14 +69,13 @@ class API:
         returns: The status code of the request that has been done
 
         Example
-         .. highlight: python
-         .. codeblock:: python
+        ```py
 
-            from OpenDiscord import arcane_center
+        from OpenDiscord import arcane_center
 
-            arcane_center_api = arcane_center.API(bot_id, authorization)
-            arcane_center_api.post_shard_count(shard_count)
-            ...
+        arcane_center_api = arcane_center.API(bot_id, authorization)
+        arcane_center_api.post_shard_count(shard_count)
+        ```
         '''
         headers = {
             'Authorization': self.authorization,
