@@ -189,3 +189,110 @@ class API:
         '''
         request = requests.get(self.url + f"/bot/{self.bot_id}/stats/").json()
         return request['page_views']
+
+    def post_server_count(self, server_count):
+        '''
+        server_count: The total servers your bot is in.
+
+        Posts the server count, requires authorization to be set.
+        '''
+        header = {
+            "Authorization": self.authorization
+        }
+
+        payload = {
+            "server_count": server_count
+        }
+        data = json.dumps(payload, sort_keys=True, indent=4, separators=(',', ': '))
+        request = requests.post(self.url + f"/bot/{self.bot_id}/stats", header=header, data=data)
+        return request.status_code
+
+    def post_shard_count(self, shard_count):
+        '''
+        shard_count: The total shards the bot currently has.
+
+        Posts the shard count, requires Authorization to be set.
+        '''
+        header = {
+            "Authorization": self.authorization
+        }
+
+        payload = {
+            "shard_count": shard_count
+        }
+        data = json.dumps(payload, sort_keys=True, indent=4, separators=(',', ': '))
+        request = requests.post(self.url + f"/bot/{self.bot_id}/stats", header=header, data=data)
+        return request.status_code
+
+    def get_user_id(self, user_id):
+        '''
+        id: The User ID
+
+        Returns the User ID, Useless feature since you can only request it using the ID, but I'll still include it.
+        '''
+        request = requests.get(self.url + f"/user/{user_id}/").json()
+        return int(request['id'])
+
+    def get_user_bio(self, user_id):
+        request = requests.get(self.url + f"/user/{user_id}/").json()
+        return str(request['bio'])
+
+    def get_user_staff(self, user_id):
+        request = requests.get(self.url + f"/user/{user_id}/").json()
+        if request['staff'] == 'false':
+            return False
+        else:
+            return True
+
+    def get_user_joined_at(self, user_id):
+        request = requests.get(self.url + f"/user/{user_id}/").json()
+        ts = request['joined_at']
+        return datetime.utcfromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
+
+    def get_user_reddit(self, user_id):
+        request = requests.get(self.url + f"/user/{user_id}/").json()
+        return str(request['reddit'])
+
+    def get_user_snapchat(self, user_id):
+        request = requests.get(self.url + f"/user/{user_id}/").json()
+        return str(request['snapchat'])
+
+    def get_user_instagram(self, user_id):
+        request = requests.get(self.url + f"/user/{user_id}/").json()
+        return str(request['instagram'])
+
+    def get_user_twitter(self, user_id):
+        request = requests.get(self.url + f"/user/{user_id}/").json()
+        return str(request['twitter'])
+
+    def get_user_github(self, user_id):
+        request = requests.get(self.url + f"/user/{user_id}/").json()
+        return str(request['github'])
+
+    def get_user_website(self, user_id):
+        request = requests.get(self.url + f"/user/{user_id}/").json()
+        return str(request['website'])
+
+    def get_user_bots(self, user_id):
+        request = requests.get(self.url + f"/user/{user_id}/").json()
+        return int(request['bots'])
+
+    def has_voted(self, user_id):
+        '''
+        This function is not tested because I can't, make sure to avoid using it.
+        '''
+        headers = {
+            "Authorization": self.authorization
+        }
+
+
+        request = requests.get(self.url + f"/bot/{self.bot_id}/votes/", headers=headers).json()
+        votes = request['votes']
+        if user_id in votes:
+            return votes[user_id]
+
+    def get_widget(self, type: str = None):
+        if type is None:
+            return self.url + f"/bot/{self.bot_id}/widget/?type=normal"
+        else:
+            return self.url + f"/bot/{self.bot_id}/widget/?type={type}"

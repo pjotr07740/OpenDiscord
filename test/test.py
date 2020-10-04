@@ -3,7 +3,7 @@ import unittest
 from OpenDiscord import arcane_center
 from OpenDiscord import blist
 
-blist_api = blist.API(744619278992539770)
+blist_api = blist.API(712415898203586570, "F6QF2psvpek2Do-a8bCT")
 
 class MyTestCase(unittest.TestCase):
     def test_blist_api(self):
@@ -14,4 +14,5 @@ class MyTestCase(unittest.TestCase):
 
 
 if __name__ == '__main__':
-    unittest.main()
+    blist_api.has_voted(662014520943706133)
+    #unittest.main()
